@@ -7,36 +7,37 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch: # Manuel çalıştırma için eklenen tetikleyici
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Kodu Checkout Et
       uses: actions/checkout@v3
 
-    - name: Set up JDK 17
+    - name: JDK 17'yi Kur
       uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
         java-version: '17'
 
-    - name: Set up Android SDK
+    - name: Android SDK'yı Kur
       uses: android-actions/setup-android@v2
       with:
         api-level: 34
         build-tools-version: '34.0.0'
         cmake-version: '3.22.1'
 
-    - name: Grant execute permission for gradlew
+    - name: gradlew için çalıştırma izni ver
       run: chmod +x ./gradlew
 
-    - name: Build with Gradle
+    - name: Gradle ile Derle
       run: ./gradlew build
 
-    - name: Run unit tests
+    - name: Birim Testlerini Çalıştır
       run: ./gradlew test
 
-    - name: Run Android instrumented tests
+    - name: Android Enstrümantasyon Testlerini Çalıştır
       run: ./gradlew connectedAndroidTest
